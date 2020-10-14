@@ -1,0 +1,58 @@
+Approaches to concurrency:
+        Multiple process with single thread
+	PROCESS 1	IPC- OS	PROCESS 2
+Thread 2
+	 Thread 1
+	
+	• Different types of IPC -> Signals, Sockets, PIPE, Files
+	• This is slower as each process has a process stack which is provided by the OS for protection etc.
+	• OS should devote internal resource to manage each process
+	• Using separate processes has advantages of running each process on distinct machines connected over a network.
+	• This increases parallelism and improves performances depending on architecture.
+
+        Single Process with multi-threads
+	Thread 1	Shared mem	Thread 2
+	• Threads are lightweight processes
+	• Share same address space
+	• References to global objects can be passed around among threads
+	• Complicated to setup and hard to manage.
+	• This is better as OS has less book-keeping on the process stack. Especially with shared memory 
+	• Shared address space can be accessed by all threads, but the program should ensure that data inside shared address space is consistent across all threads.
+
+Difference between Concurrency and Parallelism
+Parallelism	Concurrency
+• Performance oriented	• When the concern is separation and responsiveness
+• When you need to take advantage of hardware.	
+
+Why use concurrency?
+Separation of concerns and responsiveness
+
+Responsiveness: 
+	• Consider, a DVD player in a PC. You need to play pause forward etc which is a user application thread and there is another thread which is playing the content. 
+Performance:
+	• Two ways to concurrency for performance:
+		○ First way
+			§ Divide single task into parts and run each in parallel reducing total run time -> parallelism
+				□ Each thread performing same function on different parts of data is called data parallelism
+			§ Algorithms that are suspect to such parallelism are called embarrassingly parallel.
+				□ These have good scalable properties as the number of hardware threads go up. (many hands make light work)
+		○ Second way
+			§ Use available parallelism to solve bigger problems
+				□ Similar to data parallelism
+				□ Example: increased video quality in video, if different parts of the video can be improved simultaneously
+
+When not to use concurrency:
+	• If there is no benefit and if code is complex and difficult to maintain
+	• Number of threads are limited. 
+	• Using too many threads can exhaust the system resources as each thread needs a separate stack.
+		○ Consider 32 bit machines, if memory is 4GB- address space limit then if each thread has a 1MB stack then if 4096 threads are launched then there is no more space for heap, stack, code, static data
+		○ Although 64 bit machines don't have to address space, but still it has finite resources
+	• Also context switching from user thread to kernel thread which is costly. So always consider number of threads into account when designing an application.
+
+C++:
+. Object oriented multi threading facilities
+. MFC - Application framework. - BOOST and ACE
+. C++11 - thread aware memory model. 
+
+
+
